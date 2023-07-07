@@ -1,8 +1,9 @@
-import weavedb
 import requests
 import json
 import flowers
 import xgboost
+from weavedb.sdk import WeaveDB
+
 
 def predict(data):
     model = flowers.load("<path-to-machine-learning-model>")
