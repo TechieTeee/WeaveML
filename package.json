@@ -2,6 +2,8 @@
   "dependencies": {
     "arweavekit": "^1.2.11",
     "node-modules": "^1.0.1",
+    "playwright": "^1.35.1",
+    "request": "^2.88.2",
     "weavedb-sdk": "^0.27.26",
     "weavedb-sdk-node": "^0.27.21"
   }
