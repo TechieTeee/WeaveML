@@ -3,16 +3,18 @@ const fetch = require('node-fetch');
 const dotenv = require('dotenv');
 
 const weavedb = {
-  WeaveDB: function(apiKey) {
-    // For WeaveDB constructor
-    this.apiKey = apiKey;
+  WeaveDB: function(contractTxId) {
+    // Implementation for WeaveDB constructor
+    this.contractTxId = contractTxId;
   },
   saveData: function(data) {
-    // For saving data to WeaveDB
+    // Implementation for saving data to WeaveDB
+    // Replace this with your desired storage mechanism
     console.log('Saving data:', data);
   },
   loadData: function() {
-    // For loading data from WeaveDB
+    // Implementation for loading data from WeaveDB
+    // Replace this with your desired retrieval mechanism
     const data = {}; // Example data retrieved from storage
     console.log('Loading data:', data);
     return data;
@@ -47,7 +49,7 @@ const loadModel = async () => {
 async function main() {
   dotenv.config(); // Load environment variables from .env file
 
-  const db = new weavedb.WeaveDB(process.env.API_KEY);
+  const db = new weavedb.WeaveDB(process.env.CONTRACT_TX_ID);
   const url = process.env.GRAPH_API_URL;
 
   const response = await requests.get(url);
