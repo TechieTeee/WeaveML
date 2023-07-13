@@ -1,6 +1,6 @@
 const tf = require('@tensorflow/tfjs');
-const fetch = require('node-fetch');
-const dotenv = require('dotenv');
+const fetch = require('isomorphic-fetch');
+require('isomorphic-fetch/fetch-npm-node');
 
 const weavedb = {
   WeaveDB: function(contractTxId) {
@@ -47,12 +47,12 @@ const loadModel = async () => {
 };
 
 async function main() {
-  dotenv.config(); // Load environment variables from .env file
+  const CONTRACT_TX_ID = 'v7xdnco4ygYpqCCCqGo7RYkRqoieEFxC-kS63UsfWXA';
+  const GRAPH_API_URL = 'https://thegraph.com/hosted-service/subgraph/anudit/lens-protocol';
 
-  const db = new weavedb.WeaveDB(process.env.CONTRACT_TX_ID);
-  const url = process.env.GRAPH_API_URL;
+  const db = new weavedb.WeaveDB(CONTRACT_TX_ID);
 
-  const response = await requests.get(url);
+  const response = await requests.get(GRAPH_API_URL);
   const data = JSON.parse(response.content);
 
   db.insert(data);
