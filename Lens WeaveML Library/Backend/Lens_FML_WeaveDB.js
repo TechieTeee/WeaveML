@@ -1,22 +1,24 @@
 const tf = require('@tensorflow/tfjs');
 const fetch = require('isomorphic-fetch');
 require('isomorphic-fetch/fetch-npm-node');
+const cheerio = require('cheerio');
 
 const weavedb = {
   WeaveDB: function(contractTxId) {
     // Implementation for WeaveDB constructor
     this.contractTxId = contractTxId;
+    this.data = {}; // In-memory database (replace with your storage mechanism)
   },
   saveData: function(data) {
     // Implementation for saving data to WeaveDB
-    // Da will be saved to WeaveDB, once in right format
-    console.log('Saving data:', data);
+    // Overwrites the existing data
+    this.data = data;
+    console.log('Data saved to WeaveDB:', data);
   },
   loadData: function() {
     // Implementation for loading data from WeaveDB
-    const data = {};
-    console.log('Loading data:', data);
-    return data;
+    console.log('Data loaded from WeaveDB:', this.data);
+    return this.data;
   }
 };
 
@@ -25,7 +27,12 @@ const requests = {
     // Implementation for making a GET request
     const response = await fetch(url);
     const content = await response.text();
-    return { content };
+    
+    // Parse HTML content to JSON using cheerio
+    const $ = cheerio.load(content);
+    const jsonData = JSON.parse($('pre').text());
+    
+    return { content: jsonData };
   }
 };
 
@@ -52,9 +59,10 @@ async function main() {
   const db = new weavedb.WeaveDB(CONTRACT_TX_ID);
 
   const response = await requests.get(GRAPH_API_URL);
-  const data = JSON.parse(response.content);
+  const data = response.content;
 
-  db.insert(data);
+  // Saves the data retrieved to the WeaveDB instance
+  db.saveData(data);
 
   const model = tf.sequential();
   model.add(tf.layers.dense({ units: 1, inputShape: [data["features"].length] }));
