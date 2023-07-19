@@ -9,13 +9,12 @@ const weavedb = {
   },
   saveData: function(data) {
     // Implementation for saving data to WeaveDB
-    // Replace this with your desired storage mechanism
+    // Da will be saved to WeaveDB, once in right format
     console.log('Saving data:', data);
   },
   loadData: function() {
     // Implementation for loading data from WeaveDB
-    // Replace this with your desired retrieval mechanism
-    const data = {}; // Example data retrieved from storage
+    const data = {};
     console.log('Loading data:', data);
     return data;
   }
