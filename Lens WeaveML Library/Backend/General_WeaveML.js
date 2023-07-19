@@ -11,12 +11,14 @@ const readline = require('readline').createInterface({
   const weavedb = {
     WeaveDB: function(contractTxId) {
       // Implementation for WeaveDB constructor
+      // Needs further work
       this.contractTxId = contractTxId;
-      this.data = {}; // In-memory database (replace with your storage mechanism)
+      this.data = {};
     },
     saveData: function(data) {
       // Implementation for saving data to WeaveDB
-      this.data = data; // In this example, we overwrite the existing data with the new data
+      // Overwrites the existing data with the new data
+      this.data = data; 
       console.log('Data saved to WeaveDB:', data);
     },
     loadData: function() {
@@ -63,9 +65,10 @@ const readline = require('readline').createInterface({
       const db = new weavedb.WeaveDB(CONTRACT_TX_ID);
   
       const response = await requests.get(GRAPH_API_URL);
+
       const data = response.content;
-  
-      db.saveData(data); // Save the retrieved data to WeaveDB
+      // Saves the retrieved data to WeaveDB
+      db.saveData(data); 
   
       const model = tf.sequential();
       model.add(tf.layers.dense({ units: 1, inputShape: [data["features"].length] }));
