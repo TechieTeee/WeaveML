@@ -1,49 +1,47 @@
-import requests
-import json
-import flowers
-import xgboost
-from weavedb.sdk import WeaveDB
+const tf = require("tensorflow/tfjs-node");
+const requests = require("requests");
+const json = require("json");
 
+function predict(data) {
+  const model = tf.keras.models.loadModel("path-to-machine-learning-model");
+  return model.predict(data);
+}
 
-def predict(data):
-    model = flowers.load("<path-to-machine-learning-model>")
-    xgboost_model = xgboost.Booster()
-    xgboost_model.load_model(model_data)
-    return xgboost_model.predict(data)
+function saveModel(model) {
+  const modelData = model.toJSON();
+  return modelData;
+}
 
-def save_model(model):
-    model_data = flowers_fml.serialize_model(model)
-    xgboost_model = xgboost.Booster()
-    xgboost_model.load_model(model_data)
-    db.save_data(xgboost_model)
+function loadModel(modelData) {
+  return tf.keras.models.modelFromJSON(modelData);
+}
 
-def load_model():
-    xgboost_model = db.load_data()
-    return flowers_fml.deserialize_model(xgboost_model)
+const name = "__main__";
 
-if name == "__main__":
-    db = weavedb.WeaveDB("v7xdnco4ygYpqCCCqGo7RYkRqoieEFxC-kS63UsfWXA")
+if (name === "__main__") {
+  const db = weavedb.WeaveDB("v7xdnco4ygYpqCCCqGo7RYkRqoieEFxC-kS63UsfWXA");
 
-    url = "https://api.thegraph.com/subgraphs/name/lensprotocol/lens"
-    response = requests.get(url)
-    data = json.loads(response.content)
+  const url = "https://api.thegraph.com/subgraphs/name/lensprotocol/lens";
+  const response = requests.get(url);
+  const data = json.parse(response.content);
 
-    db.insert(data)
+  db.insert(data);
 
-    model = xgboost.Booster()
-    model.fit(data["features"], data["target"])
-    save_model(model)
-    model = load_model()
-    predictions = []
-    for record in data:
-        predictions.append(predict(record))
+  const inputLayer = tf.keras.layers.Input({ shape: [None, data["features"][0].length] });
+  const hiddenLayer = tf.keras.layers.Dense(10, { activation: "relu" })(inputLayer);
+  const outputLayer = tf.keras.layers.Dense(1, { activation: "linear" })(hiddenLayer);
 
-    print(predictions)
+  const model = tf.keras.models.Model(inputLayer, outputLayer);
 
-if name == "__main__":
-    db = LensFMLWeaveDB()
-    data = db.get_lens_data()
-    model = flowers_fml.create_model(data)
-    db.save_model(model)
-    model = db.load_model()
-    print(model)
+  model.compile(loss="meanSquaredError", optimizer="adam", batch_size=128);
+  model.fit(data["features"], data["target"], { epochs: 100 });
+  saveModel(model);
+  model = loadModel(model.toJSON());
+
+  const predictions = [];
+  for (const record of data["features"]) {
+    predictions.push(predict(record));
+  }
+
+  console.log(predictions);
+}

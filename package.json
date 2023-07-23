@@ -1,17 +1,28 @@
 {
   "dependencies": {
+    "@chakra-ui/react": "^2.8.0",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@tensorflow-models/knn-classifier": "^1.2.4",
     "@tensorflow/tfjs": "^4.9.0",
+    "@tensorflow/tfjs-node": "^4.9.0",
     "arweavekit": "^1.2.11",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.3.1",
+    "ethers": "5.7.2",
+    "framer-motion": "^6",
     "isomorphic-fetch": "^3.0.0",
+    "localforage": "^1.10.0",
     "node-fetch": "^3.3.1",
     "node-modules": "^1.0.1",
     "npm": "^9.8.0",
+    "papaparse": "^5.4.1",
+    "para": "^0.0.2",
     "playwright": "^1.35.1",
+    "ramda": "^0.29.0",
     "readline": "^1.3.0",
     "request": "^2.88.2",
-    "weavedb-sdk": "^0.27.26",
-    "weavedb-sdk-node": "^0.27.21"
+    "weavedb-sdk": "^0.28.6",
+    "weavedb-sdk-node": "^0.28.5"
   }
 }
